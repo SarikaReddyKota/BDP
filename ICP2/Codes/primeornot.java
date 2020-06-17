@@ -11,7 +11,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class Primeornot {
+public class PrimeNumberNew {
 
     public static class TokenizerMapper
             extends Mapper<Object, Text, Text, Text> {
@@ -37,35 +37,43 @@ public class Primeornot {
         public void reduce(Text key, Iterable<Text> values,
                            Context context
         ) throws IOException, InterruptedException {
-            int k = 0;
+            int k,r = 0;
                  for(Text value:values){
+
+                   //logic from here
+
+                         int i,m,flag=0;
                          k = Integer.parseInt(value.toString());
-                         int r;
-                         if(k==2)
+                         m=k/2;
+                         if(k==0||k==1){
                                  r=1;
-                         else if(k %2 == 0)
-                          r = 0;
-                         else
-                        	 r=1;
-                     context.write(key, new Text(Integer.toString(r)));
+                         }else{
+                                 for(i=2;i<=m;i++){
+                                         if(k%i==0){
+                                                 r=1;
+                                                 flag=1;
+                                                 break;
+                                         }
+                                 }
+                         }
+
+                         if(flag == 0){
+                                 r=0;
+                         }
+
+                     context.write(new Text(Integer.toString(k)),new
+Text(Integer.toString(r)));
                  }
-
-
-
-
-
-
-           // result.set(k);
 
         }
     }
 
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
-        Job job = Job.getInstance(conf, "word count");
-        job.setJarByClass(Primeornot.class);
+        Job job = Job.getInstance(conf, "prime Number");
+        job.setJarByClass(PrimeNumberNew.class);
         job.setMapperClass(TokenizerMapper.class);
-        job.setCombinerClass(IntSumReducer.class);
+      //  job.setCombinerClass(IntSumReducer.class);
         job.setReducerClass(IntSumReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
