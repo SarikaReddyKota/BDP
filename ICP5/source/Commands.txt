@@ -26,11 +26,11 @@ $sudo service mysqlId start
 
 $mysql -u root - pcloudera
 
-mysql>create table stusurvey(id int, name varchar(10), primary key(s_id));
+mysql>create table studsurvey(id int, name varchar(10), primary key(s_id));
 
 mysql>exit;
 
-sqoop export --connect jdbc:mysql://localhost/icp5 --username root --password cloudera --table stusurvey --export-dir /user/cloudera/student/part-m-00000
+sqoop export --connect jdbc:mysql://localhost/icp5 --username root --password cloudera --table studsurvey --export-dir /user/cloudera/student/part-m-00000
 
 
 Question 2:
@@ -43,6 +43,8 @@ $sudo service mysqlId start
 $mysql -u root - pcloudera
 
 mysql>create table studentmain(s_id int NOT NULL , name varchar(100),primary key(st_id)) ; 
+
+mysql>insert into student values(20, 'shriya'), (30, 'samantha'), (80, 'kajal');
 
 sqoop import --connect jdbc:mysql://localhost/icp5db --username root --password cloudera --table studentmain --hive-import --create-hive-table --hive-table default.students1;
 
