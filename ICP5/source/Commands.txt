@@ -1,0 +1,82 @@
+Question 1:
+
+$sudo service mysqlId start
+
+$mysql -u root - pcloudera
+
+mysql>create database icp5;
+
+mysql>use icp5;
+
+mysql>create table student(st_id INT NOT NULL AUTO_INCREMENT, st_name varchar(10), primary key(st_id));
+
+mysql>insert into student values(10, 'sarika'), (20, 'shruthi), (30, 'swetha');
+
+mysql>select * from student;
+
+[cloudera@quickstart]>$ hadoop fs -ls student/
+
+[cloudera@quickstart]>$ hadoop fs -cat student/
+
+mysql>exit;
+
+$sqoop import --connect jdbc:mysql://localhost/icp5 --username root --password cloudera --table student;
+
+$sudo service mysqlId start
+
+$mysql -u root - pcloudera
+
+mysql>create table stusurvey(id int, name varchar(10), primary key(s_id));
+
+mysql>exit;
+
+sqoop export --connect jdbc:mysql://localhost/icp5 --username root --password cloudera --table stusurvey --export-dir /user/cloudera/student/part-m-00000
+
+
+Question 2:
+
+
+Importing from mysql to hive:
+
+$sudo service mysqlId start
+
+$mysql -u root - pcloudera
+
+mysql>create table studentmain(s_id int NOT NULL , name varchar(100),primary key(st_id)) ; 
+
+sqoop import --connect jdbc:mysql://localhost/icp5db --username root --password cloudera --table studentmain --hive-import --create-hive-table --hive-table default.students1;
+
+
+Exporting from Hive to mysql: 
+    
+mysql>create table moviesnew(id int, title varchar(100), genre varchar(100));
+
+mysql>exit;
+
+$sqoop export --connect jdbc:mysql://localhost/icp5 --username root --password cloudera --table moviesnew --export-dir /user/hive/warehouse/movies/movies.csv;
+
+mysql> select * from moviesnew;
+
+
+
+Question 3:
+
+
+i. 
+
+$hive
+
+hive>CREATE TABLE word_count_movies_updated AS
+  > SELECT word, count(1) AS count FROM
+  > (SELECT explode(split(concat_ws(',',cast(id as string),title,genre),',')) AS word FROM movies) w
+  > GROUP BY word
+  > ORDER BY word;
+
+ii. 
+
+hive>analyze table movies compute statistics;
+
+
+iii.
+
+hive>select title from movies where title like '%1995%';
