@@ -1,0 +1,49 @@
+Question 1:
+
+Music1
+
+solrctl instancedir --generate /tmp/music1
+ls /tmp/music1/conf/
+gedit /tmp/music1/conf/schema.xml
+solrctl instancedir --create music1 /tmp/music1
+solrctl collection --create music1
+
+keyword matching:
+reviewerName:"Brian"
+
+wildcard matching  
+reviewerName: Brian*
+
+RANGE  
+overall: [ 4 TO 5]   
+
+Boost:
+(asin: 1384719342 OR asin:B00004Y2UT)^2 (overall: 5.0 OR overall: 4.0)  
+
+Question 2:
+
+Book10:
+
+solrctl instancedir --generate /tmp/music
+ls /tmp/book10/conf/
+gedit /tmp/book10/conf/schema.xml
+solrctl instancedir --create book10 /tmp/book10
+solrctl collection --create book10
+
+RANGE :
+bookprice: [ 5 TO 8]
+
+keyword matching: 
+bookname: "Foundation" 
+
+proximity:
+bookname: "A Thrones"~3 
+
+sort:  
+genre_s: "fantasy"    bookprice desc 
+
+Fuzzy logic:   
+bookname: Fodation~  
+
+Using AND: 
+authori: "Lloyd Alexander" AND genre_s: "fantasy"
