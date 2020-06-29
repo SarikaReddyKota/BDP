@@ -24,7 +24,7 @@ Question 2:
 
 Book10:
 
-solrctl instancedir --generate /tmp/music
+solrctl instancedir --generate /tmp/book10
 ls /tmp/book10/conf/
 gedit /tmp/book10/conf/schema.xml
 solrctl instancedir --create book10 /tmp/book10
