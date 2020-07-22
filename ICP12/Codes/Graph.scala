@@ -117,6 +117,16 @@ object Graph {
 
     motifs.show()
 
+    println("stateful queries")
+    val stateful = stationGraph.find("(a)-[ab]->(b); (b)-[bc]->(c); (c)-[ca]->(a)")
+
+    stateful.show()
+
+    // Select subgraph
+    println("subgraph")
+    val g2 = stationGraph.find("(a)-[e]->(b)")
+      .filter("e.Duration > 600").show()
+
     //vertex degree
     val srcCount = trips_df.distinct.groupBy("Start Station")
       .agg(count("*").alias("connecting_count"))
